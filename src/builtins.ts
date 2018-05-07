@@ -2760,35 +2760,37 @@ export function compileAbort(
   message: Expression | null,
   reportNode: Node
 ): ExpressionRef {
-  var program = compiler.program;
-  var module = compiler.module;
+  return compiler.module.createUnreachable();
 
-  var stringType = program.typesLookup.get("string"); // might be intended
-  if (!stringType) return module.createUnreachable();
+  // var program = compiler.program;
+  // var module = compiler.module;
 
-  var abortPrototype = program.elementsLookup.get(abortInternalName); // might be intended
-  if (!abortPrototype || abortPrototype.kind != ElementKind.FUNCTION_PROTOTYPE) return module.createUnreachable();
+  // var stringType = program.typesLookup.get("string"); // might be intended
+  // if (!stringType) return module.createUnreachable();
 
-  var abortInstance = (<FunctionPrototype>abortPrototype).resolve(); // reports
-  if (!(abortInstance && compiler.compileFunction(abortInstance))) return module.createUnreachable();
+  // var abortPrototype = program.elementsLookup.get(abortInternalName); // might be intended
+  // if (!abortPrototype || abortPrototype.kind != ElementKind.FUNCTION_PROTOTYPE) return module.createUnreachable();
 
-  var messageArg = message != null
-    ? compiler.compileExpression(message, stringType, ConversionKind.IMPLICIT, WrapMode.NONE)
-    : stringType.toNativeZero(module);
+  // var abortInstance = (<FunctionPrototype>abortPrototype).resolve(); // reports
+  // if (!(abortInstance && compiler.compileFunction(abortInstance))) return module.createUnreachable();
 
-  var filenameArg = compiler.compileStaticString(reportNode.range.source.normalizedPath);
+  // var messageArg = message != null
+  //   ? compiler.compileExpression(message, stringType, ConversionKind.IMPLICIT, WrapMode.NONE)
+  //   : stringType.toNativeZero(module);
 
-  compiler.currentType = Type.void;
-  return module.createBlock(null, [
-    module.createCallImport(
-      abortInstance.internalName, [
-        messageArg,
-        filenameArg,
-        module.createI32(reportNode.range.line),
-        module.createI32(reportNode.range.column)
-      ],
-      NativeType.None
-    ),
-    module.createUnreachable()
-  ]);
+  // var filenameArg = compiler.compileStaticString(reportNode.range.source.normalizedPath);
+
+  // compiler.currentType = Type.void;
+  // return module.createBlock(null, [
+  //   module.createCallImport(
+  //     abortInstance.internalName, [
+  //       messageArg,
+  //       filenameArg,
+  //       module.createI32(reportNode.range.line),
+  //       module.createI32(reportNode.range.column)
+  //     ],
+  //     NativeType.None
+  //   ),
+  //   module.createUnreachable()
+  // ]);
 }
