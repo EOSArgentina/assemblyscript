@@ -30,7 +30,7 @@
     "typedoc-plugin-external-module-name": "^1.1.1",
     "typescript": "^2.8.3",
     "webpack": "^4.7.0",
-    "webpack-cli": "^2.1.2"
+    "webpack-cli": "^5.0.1"
   },
   "main": "index.js",
   "types": "index.d.ts",
